@@ -23,6 +23,17 @@
       selectedDate: new Date(),
       callback:     null,
       scope:        window,
+      text: {
+        prev:      '<<',
+        next:      '>>'
+      },
+      css: {
+        fieldset:  'ms-fieldset',
+        select:    'ms-select',
+        button:    'ms-button',
+        hovered:   'ms-hovered',
+        disabled:  'ms-disabled'
+      },
       monthNames:   ['January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December']
     }, cfg || {});
@@ -94,9 +105,64 @@
 
 
       /**
-       * DOM Elements
+       * Create the form elements and assign event handlers
        */
-      var $month, $year, $prev, $next;
+      
+      // Render container
+      var $fieldset = $('<fieldset>').addClass(config.css.fieldset);
+      
+      // Render month select
+      var $month = $('<select>').change(function() {
+        _setDate(_getSelectedDate());
+        this.blur();
+      }).addClass(config.css.select);
+
+      // Render month options
+      for (var i = 0; i < 12; ++i) {
+        $month.append($('<option>').val(i).text(config.monthNames[i]));
+      }
+
+      // Render year select
+      var $year = $('<select>').change(function() {
+        _setDate(_getSelectedDate());
+        this.blur();
+      }).addClass(config.css.select);
+
+      // Render year options
+      var maxYear = config.maxDate.getFullYear();
+      var minYear = config.minDate.getFullYear();
+      for (var j = maxYear; j >= minYear; --j) {
+        $year.append($('<option>').val(j).text(j));
+      }
+
+      // Render previous button
+      var $prev = $('<input type="button">').click(function() {
+        var year  = parseInt($year.val(), 10);
+        var month = parseInt($month.val(), 10);
+        _setDate(__getEndOfPreviousMonth(month, year));
+        this.blur();
+      }).addClass(config.css.button).val(config.text.prev);
+
+      // Render next button
+      var $next = $('<input type="button">').click(function() {
+        var year  = parseInt($year.val(), 10);
+        var month = parseInt($month.val(), 10);
+        _setDate(__getStartOfNextMonth(month, year));
+        this.blur();
+      }).addClass(config.css.button).val(config.text.next);
+
+      // Add hover class to each element
+      $.each([$fieldset, $prev, $month, $year, $next], function() {
+        var $this = this;
+        $this.hover(function() {
+          $this.addClass(config.css.hovered);
+        }, function() {
+          $this.removeClass(config.css.hovered);
+        });
+      });
+
+      // Assemble elements
+      $fieldset.append($prev).append($month).append($year).append($next);
 
 
       /**
@@ -151,24 +217,24 @@
           var option = $(this);
           var val = option.val();
           if (year === minYear && val < minMonth || year === maxYear && val > maxMonth) {
-            option.attr('disabled', 'disabled').addClass('disabled');
+            option.attr('disabled', 'disabled').addClass(config.css.disabled);
           } else {
-            option.removeAttr('disabled').removeClass('disabled');
+            option.removeAttr('disabled').removeClass(config.css.disabled);
           }
         });
 
         // Disable/enable previous button
         if (__getEndOfPreviousMonth(month, year) < config.minDate) {
-          $prev.attr('disabled', 'disabled').addClass('disabled');
+          $prev.attr('disabled', 'disabled').addClass(config.css.disabled);
         } else {
-          $prev.removeAttr('disabled').removeClass('disabled');
+          $prev.removeAttr('disabled').removeClass(config.css.disabled);
         }
 
         // Disable/enable next button
         if (__getStartOfNextMonth(month, year) > config.maxDate) {
-          $next.attr('disabled', 'disabled').addClass('disabled');
+          $next.attr('disabled', 'disabled').addClass(config.css.disabled);
         } else {
-          $next.removeAttr('disabled').removeClass('disabled');
+          $next.removeAttr('disabled').removeClass(config.css.disabled);
         }
 
         // Fire callback
@@ -177,56 +243,11 @@
         }
       };
 
-
-      /**
-       * Create the form elements and assign event handlers
-       */
-
-      // Render month select
-      $month = $('<select>').change(function() {
-        _setDate(_getSelectedDate());
-        this.blur();
-      });
-
-      // Render month options
-      for (var i = 0; i < 12; ++i) {
-        $month.append($('<option>').val(i).text(config.monthNames[i]));
-      }
-
-      // Render year select
-      $year = $('<select>').change(function() {
-        _setDate(_getSelectedDate());
-        this.blur();
-      });
-
-      // Render year options
-      var maxYear = config.maxDate.getFullYear();
-      var minYear = config.minDate.getFullYear();
-      for (var j = maxYear; j >= minYear; --j) {
-        $year.append($('<option>').val(j).text(j));
-      }
-
-      // Render previous button
-      $prev = $('<input type="button">').val('<').click(function() {
-        var year  = parseInt($year.val(), 10);
-        var month = parseInt($month.val(), 10);
-        _setDate(__getEndOfPreviousMonth(month, year));
-        this.blur();
-      });
-
-      // Render next button
-      $next = $('<input type="button">').val('>').click(function() {
-        var year  = parseInt($year.val(), 10);
-        var month = parseInt($month.val(), 10);
-        _setDate(__getStartOfNextMonth(month, year));
-        this.blur();
-      });
-
       // Set the form elements to the configured selectedDate
       _setDate(config.selectedDate);
 
       // Append the form elements to the jQuery instance
-      $(this).append($prev).append($month).append($year).append($next);
+      $(this).append($fieldset);
 
     });
   };
