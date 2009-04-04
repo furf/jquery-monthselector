@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>jquery.monthSelector plugin</title>
+	<style type="text/css" media="screen">
+  .example {
+    margin:1em;
+    border:1px solid #ccc;
+    padding:1em;
+    display:inline-block;
+  }
+  .ms-fieldset {
+    margin:0.5em 0;
+    border:0;
+    padding:0;
+  }	 
+	</style>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="jquery.monthSelector-1.0.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	(function($) {
+    
+    $(function() {
+
+      var today = new Date();
+
+      $('#example-1').monthSelector({
+        callback: function(date) {
+          $('#output-1').val(date);
+        }
+      });
+
+      $('#example-2').monthSelector({
+        minDate: new Date(today.getFullYear() - 1, 6, 1),
+        maxDate: new Date(today.getFullYear() + 1, 5, 1),
+        showFirstAndLast: false,
+        callback: function(date) {
+          $('#output-2').val(date);
+        }
+      });
+
+      $('#example-3').monthSelector({
+        minDate: new Date(today.getFullYear() - 1, 6, 1),
+        maxDate: new Date(today.getFullYear() + 1, 5, 1),
+        showFirstAndLast: false,
+        showPrevAndNext:  false,
+        monthFormat: 'short',
+        callback: function(date) {
+          $('#output-3').val(date);
+        }
+      });
+
+    });
+
+	})(jQuery);
+	</script>
+</head>
+
+<body>
+
+  <div class="example" id="example-1"><input class="output" id="output-1" size="40"/></div>
+  <div class="example" id="example-2"><input class="output" id="output-2" size="40"/></div>
+  <div class="example" id="example-3"><input class="output" id="output-3" size="40"/></div>
+  
+</body>
+</html>
