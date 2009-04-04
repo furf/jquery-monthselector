@@ -136,8 +136,16 @@
      */
     this.each(function() {
 
+
+      /**
+       * Set unique ID
+       */
       var id = $.fn.monthSelector.counter++;
+
       
+      /**
+       * DOM elements
+       */
       var $fieldset,
           $month,
           $year,
@@ -145,6 +153,7 @@
           $last,
           $prev,
           $next;
+
 
       /**
        * Parses form values and returns a date representing the first day of
@@ -294,6 +303,7 @@
           this.blur();
         });
 
+      // Hide first and last buttons (if configured)
       if (!config.showFirstAndLast) {
         $first.hide();
         $last.hide();
@@ -323,7 +333,7 @@
           this.blur();
         });
 
-      // Hide
+      // Hide previous and next buttons (if configured)
       if (!config.showPrevAndNext) {
         $prev.hide();
         $next.hide();
