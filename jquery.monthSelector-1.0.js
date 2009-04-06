@@ -284,20 +284,20 @@
       }
 
       // Render first button
-      $first = $('<input type="button">')
+      $first = $('<button>')
         .addClass(css.button + ' ' + css.first)
         .attr('id', css.first + '-' + id)
-        .val(config.firstText)
+        .html(config.firstText)
         .click(function() {
           _setDate(config.minDate);
           this.blur();
         });
 
       // Render last button
-      $last = $('<input type="button">')
+      $last = $('<button>')
         .addClass(css.button + ' ' + css.last)
         .attr('id', css.last + '-' + id)
-        .val(config.lastText)
+        .html(config.lastText)
         .click(function() {
           _setDate(config.maxDate);
           this.blur();
@@ -310,10 +310,10 @@
       }
 
       // Render previous button
-      $prev = $('<input type="button">')
+      $prev = $('<button>')
         .addClass(css.button + ' ' + css.prev)
         .attr('id', css.prev + '-' + id)
-        .val(config.prevText)
+        .html(config.prevText)
         .click(function() {
           var year  = parseInt($year.val(), 10);
           var month = parseInt($month.val(), 10);
@@ -322,10 +322,10 @@
         });
 
       // Render next button
-      $next = $('<input type="button">')
+      $next = $('<button>')
         .addClass(css.button + ' ' + css.next)
         .attr('id', css.next + '-' + id)
-        .val(config.nextText)
+        .html(config.nextText)
         .click(function() {
           var year  = parseInt($year.val(), 10);
           var month = parseInt($month.val(), 10);
